@@ -1,0 +1,2 @@
+eclipse-sbt-plugin
+==================
