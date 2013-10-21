@@ -1,6 +1,5 @@
+/com.github.jarlakxen.scala.sbt/bin
 *.class
 
 # Package Files #
 *.jar
-*.war
-*.ear

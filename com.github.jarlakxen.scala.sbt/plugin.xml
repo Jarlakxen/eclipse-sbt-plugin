@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="4.2"?>
+<plugin>
+   <!--=======================================================================-->
+   <!-- wizards -->
+   <!--=======================================================================-->
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <wizard
+            category="org.scala-ide.sdt.core.wizards"
+            class="com.github.jarlakxen.scala.sbt.wizard.create.SbtWizard"
+            icon="icons/new_project.gif"
+            id="com.github.jarlakxen.scala.sbt.wizard.create"
+            name="SBT Project"
+            project="true">
+      </wizard>
+   </extension>
+   <extension
+         point="org.eclipse.ui.importWizards">
+      <category id="com.sbt.core.wizardst" name="SBT"/>
+      <wizard
+            category="com.sbt.core.wizard"
+            class="com.github.jarlakxen.scala.sbt.wizard._import.SbtImportWizard"
+            icon="icons/new_project.gif"
+            id="com.github.jarlakxen.scala.sbt.wizard._import"
+            name="SBT Project"
+            project="true">
+      </wizard>
+   </extension>
+
+   <!--=======================================================================-->
+   <!-- actions -->
+   <!--=======================================================================-->
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            adaptable="true"
+            id="com.github.jarlakxen.scala.sbt.objectContribution1"
+            objectClass="org.eclipse.core.resources.IProject">
+         <menu
+               id="com.github.jarlakxen.scala.sbt.menu"
+               label="SBT"
+               path="additions">
+            <separator
+                  name="top">
+            </separator>
+            <separator
+                  name="commands">
+            </separator>
+            <separator
+                  name="additions">
+            </separator>
+         </menu>
+         <action
+               class="com.github.jarlakxen.scala.sbt.action.CleanAction"
+               icon="icons/delete.gif"
+               id="com.github.jarlakxen.scala.sbt.action.CleanAction"
+               label="Clean"
+               menubarPath="com.github.jarlakxen.scala.sbt.menu/commands">
+         </action>
+         <action
+               class="com.github.jarlakxen.scala.sbt.action.CompileAction"
+               icon="icons/build.gif"
+               id="com.github.jarlakxen.scala.sbt.action.CompileAction"
+               label="Compile"
+               menubarPath="com.github.jarlakxen.scala.sbt.menu/commands">
+         </action>
+         <action
+               class="com.github.jarlakxen.scala.sbt.action.PackageAction"
+               icon="icons/jar.gif"
+               id="com.github.jarlakxen.scala.sbt.action.PackageAction"
+               label="Make Package"
+               menubarPath="com.github.jarlakxen.scala.sbt.menu/commands">
+         </action>
+         <action
+               class="com.github.jarlakxen.scala.sbt.action.DocAction"
+               icon="icons/javadoc.gif"
+               id="com.github.jarlakxen.scala.sbt.action.DocAction"
+               label="Generate Document"
+               menubarPath="com.github.jarlakxen.scala.sbt.menu/commands">
+         </action>
+         <action
+               class="com.github.jarlakxen.scala.sbt.action.DownloadSourceAction"
+               icon="icons/javadoc.gif"
+               id="com.github.jarlakxen.scala.sbt.action.DownloadSourceAction"
+               label="Download Source"
+               menubarPath="com.github.jarlakxen.scala.sbt.menu/commands">
+         </action>
+         <action
+               class="com.github.jarlakxen.scala.sbt.action.SbtConsoleAction"
+               icon="icons/console_view.gif"
+               id="com.github.jarlakxen.scala.sbt.action.SbtConsoleAction"
+               label="Open SBT Shell"
+               menubarPath="com.github.jarlakxen.scala.sbt.menu/top">
+         </action>
+         <action
+               class="com.github.jarlakxen.scala.sbt.action.TestAction"
+               id="com.github.jarlakxen.scala.sbt.action.TestAction"
+               label="Run Tests"
+               menubarPath="com.github.jarlakxen.scala.sbt.menu/commands">
+         </action>
+         <visibility>
+            <objectState
+                  name="nature"
+                  value="com.github.jarlakxen.scala.sbt.SbtProjectNature">
+            </objectState>
+         </visibility>
+      </objectContribution>
+      <objectContribution
+            adaptable="true"
+            id="com.github.jarlakxen.scala.sbt.objectContribution2"
+            objectClass="org.eclipse.core.resources.IProject">
+         <menu
+               id="com.github.jarlakxen.scala.sbt.menu"
+               label="SBT"
+               path="additions">
+            <separator
+                  name="top">
+            </separator>
+            <separator
+                  name="commands">
+            </separator>
+            <separator
+                  name="additions">
+            </separator>
+         </menu>
+         <action
+               class="com.github.jarlakxen.scala.sbt.action.MigrateAction"
+               icon="icons/eclipse.gif"
+               id="com.github.jarlakxen.scala.sbt.action.MigrateAction"
+               label="Migrate to SBT"
+               menubarPath="com.github.jarlakxen.scala.sbt.menu/additions">
+         </action>
+         <visibility>
+            <not>
+               <objectState
+                     name="nature"
+                     value="com.github.jarlakxen.scala.sbt.SbtProjectNature">
+               </objectState>
+            </not>
+         </visibility>
+      </objectContribution>
+      <objectContribution
+            adaptable="true"
+            id="com.github.jarlakxen.scala.sbt.objectContribution5"
+            objectClass="org.eclipse.core.resources.IProject">
+         <action
+               class="com.github.jarlakxen.scala.sbt.action.UpdateProjectConfigurationAction"
+               icon="icons/refresh_nav.gif"
+               id="com.github.jarlakxen.scala.sbt.action.UpdateProjectConfigurationAction"
+               label="Update Project Configuration"
+               menubarPath="com.github.jarlakxen.scala.sbt.menu/additions">
+         </action>
+         <filter
+               name="projectNature"
+               value="com.github.jarlakxen.scala.sbt.SbtProjectNature">
+         </filter>
+      </objectContribution>
+   </extension>
+
+   <!--=======================================================================-->
+   <!-- property pages -->
+   <!--=======================================================================-->
+   <extension
+         point="org.eclipse.ui.propertyPages">
+      <page
+            class="com.github.jarlakxen.scala.sbt.SbtPropertyPage"
+            id="com.github.jarlakxen.scala.sbt.SbtPropertyPage"
+            name="SBT">
+         <enabledWhen>
+            <adapt
+                  type="org.eclipse.core.resources.IProject">
+            </adapt>
+         </enabledWhen>
+         <filter
+               name="nature"
+               value="com.github.jarlakxen.scala.sbt.SbtProjectNature">
+         </filter>
+      </page>
+   </extension>
+
+   <!--=======================================================================-->
+   <!-- nature -->
+   <!--=======================================================================-->
+   <extension
+         id="SbtProjectNature"
+         point="org.eclipse.core.resources.natures">
+      <runtime>
+         <run
+               class="com.github.jarlakxen.scala.sbt.SbtProjectNature">
+         </run>
+      </runtime>
+   </extension>
+
+   <!--=======================================================================-->
+   <!-- editors -->
+   <!--=======================================================================-->
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="com.github.jarlakxen.scala.sbt.editor.SbtEditor"
+            default="true"
+            extensions="sbt"
+            id="com.github.jarlakxen.scala.sbt.editor.SbtEditor"
+            name="SBT Editor">
+      </editor>
+   </extension>
+
+</plugin>
