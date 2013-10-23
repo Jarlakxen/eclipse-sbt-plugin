@@ -16,6 +16,10 @@ eclipse-sbt-plugin supports all of SBT 0.11, 0.12 and 0.13.
 
 You can create a SBT project using a wizard. Choose File > New > Project from the main menu of Eclipse and choose Scala > SBT Project in the new project creation wizard.
 
+[![Create Wizard I](http://i.imgur.com/NW6z9MP.png)](https://github.com/Jarlakxen/eclipse-sbt-plugin)
+
+[![Create Wizard II](http://i.imgur.com/z1J9HbX.png)](https://github.com/Jarlakxen/eclipse-sbt-plugin)
+
 ##Release Note
 
 ###1.0.0
@@ -23,8 +27,11 @@ You can create a SBT project using a wizard. Choose File > New > Project from th
 + Automatic reload after change in build.sbt or /project
 + Configurable Scala version
 + Add Web Project nature
++ Add Spec2 library on creation
 + Move large operations to background jobs
 + Bug fixing
 
 ###TODO
 + Import sbt project
++ Improve outline
++ A lot of things ;)

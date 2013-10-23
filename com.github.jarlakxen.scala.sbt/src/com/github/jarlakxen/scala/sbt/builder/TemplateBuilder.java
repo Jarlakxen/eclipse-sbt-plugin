@@ -1,5 +1,12 @@
-package com.github.jarlakxen.scala.sbt;
+package com.github.jarlakxen.scala.sbt.builder;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
+
+import com.github.jarlakxen.scala.sbt.SbtVersion;
+import com.github.jarlakxen.scala.sbt.ScalaVersion;
 import com.github.jarlakxen.scala.sbt.wizard.create.SbtWizard;
 
 /**
@@ -21,6 +28,7 @@ public class TemplateBuilder {
 		private String organization;
 		private String projectName;
 		private String productVersion;
+		private TestLibrary testLibrary;
 		private boolean webNature = false;
 
 		private SbtTemplateBuilder() {
@@ -44,6 +52,11 @@ public class TemplateBuilder {
 
 		public SbtTemplateBuilder productVersion(String productVersion) {
 			this.productVersion = productVersion;
+			return this;
+		}
+		
+		public SbtTemplateBuilder testLibrary(TestLibrary testLibrary) {
+			this.testLibrary = testLibrary;
 			return this;
 		}
 
@@ -77,9 +90,18 @@ public class TemplateBuilder {
 				builder.append("seq(webSettings :_*)").append(BR).append(BR);
 			}
 
-			builder.append("libraryDependencies ++= Seq(");
+			List<String> libraryDependencies = new ArrayList<String>();
+
+			if (testLibrary != null) {
+				libraryDependencies.add( testLibrary.getDependancy(scalaVersion));
+			}
 			if (webNature) {
-				builder.append(BR).append("\"org.mortbay.jetty\" % \"jetty\" % \"6.1.22\" % \"container\"").append(BR);
+				libraryDependencies.add( "\"org.mortbay.jetty\" % \"jetty\" % \"6.1.22\" % \"container\"");
+			}
+			
+			builder.append("libraryDependencies ++= Seq(");
+			if (!libraryDependencies.isEmpty()) {
+				builder.append(BR).append(StringUtils.join(libraryDependencies, "," + BR )).append(BR);
 			}
 			builder.append(")").append(BR).append(BR);
 

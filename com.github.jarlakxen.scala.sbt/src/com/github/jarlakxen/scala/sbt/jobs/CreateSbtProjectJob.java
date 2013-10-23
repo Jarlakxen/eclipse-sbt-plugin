@@ -16,8 +16,8 @@ import org.eclipse.core.runtime.jobs.Job;
 
 import com.github.jarlakxen.scala.sbt.SbtPlugin;
 import com.github.jarlakxen.scala.sbt.SbtProjectConfiguration;
-import com.github.jarlakxen.scala.sbt.TemplateBuilder;
 import com.github.jarlakxen.scala.sbt.action.UpdateProjectConfigurationAction;
+import com.github.jarlakxen.scala.sbt.builder.TemplateBuilder;
 import com.github.jarlakxen.scala.sbt.configurations.CreateSbtProjectConfiguration;
 import com.github.jarlakxen.scala.sbt.util.ProjectUtils;
 import com.github.jarlakxen.scala.sbt.wizard.create.SbtWizard;
@@ -78,7 +78,7 @@ public class CreateSbtProjectJob extends WorkspaceJob {
 			if (!projectFile.exists()) {
 				content = TemplateBuilder.createSbtTemplate().projectName(configuration.getProjectName())
 						.organization(configuration.getOrganization()).productVersion(configuration.getProductVersion())
-						.scalaVersion(configuration.getScalaVersion()).webNature(configuration.isWebNature()).build();
+						.scalaVersion(configuration.getScalaVersion()).testLibrary(configuration.getTestLibrary()).webNature(configuration.isWebNature()).build();
 				projectFile.create(IOUtils.toInputStream(content, "UTF-8"), true, null);
 			}
 
@@ -111,7 +111,7 @@ public class CreateSbtProjectJob extends WorkspaceJob {
 			monitor.setTaskName("Adding natures to the project...");
 			SbtPlugin.addProjectNatures(project);
 
-			SbtProjectConfiguration config = new SbtProjectConfiguration(project, configuration.getSbtVersion());
+			SbtProjectConfiguration config = new SbtProjectConfiguration(project, configuration.getSbtVersion(), configuration.getScalaVersion());
 			config.saveConfiguration();
 
 			monitor.worked(1);

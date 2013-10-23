@@ -18,9 +18,9 @@ import org.eclipse.debug.core.ILaunch;
 import com.github.jarlakxen.scala.sbt.SbtPlugin;
 import com.github.jarlakxen.scala.sbt.SbtProjectConfiguration;
 import com.github.jarlakxen.scala.sbt.SbtVersion;
-import com.github.jarlakxen.scala.sbt.TemplateBuilder;
 import com.github.jarlakxen.scala.sbt.action.MigrateAction;
 import com.github.jarlakxen.scala.sbt.action.UpdateProjectConfigurationAction;
+import com.github.jarlakxen.scala.sbt.builder.TemplateBuilder;
 import com.github.jarlakxen.scala.sbt.configurations.MigrateToSbtProjectConfiguration;
 import com.github.jarlakxen.scala.sbt.wizard.migrate.MigrationWizardPage;
 

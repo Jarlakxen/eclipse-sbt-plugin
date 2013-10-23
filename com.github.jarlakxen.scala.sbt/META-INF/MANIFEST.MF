@@ -39,6 +39,7 @@ Require-Bundle: org.eclipse.core.expressions,
  org.scala-ide.sdt.core,
  org.apache.commons.io;bundle-version="2.0.1",
  org.apache.commons.lang;bundle-version="2.6.0"
+Bundle-ClassPath: ., libs/mustache-compiler-0.8.13.jar
 Import-Package: 
  com.ibm.icu.text;apply-aspects:=false;org.eclipse.swt.graphics;apply-aspects:=false,
  scala.tools.eclipse;apply-aspects:=false,

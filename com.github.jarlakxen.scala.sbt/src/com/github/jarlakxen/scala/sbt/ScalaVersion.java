@@ -21,12 +21,18 @@ public enum ScalaVersion {
 	}
 
 	private final String text;
-
+	private final String baseVersion;
+	
 	private ScalaVersion(String text) {
 		this.text = text;
+		this.baseVersion = text.substring(0, text.lastIndexOf("."));
 	}
 
 	public String getText() {
 		return text;
+	}
+	
+	public String getBaseVersion(){
+		return baseVersion;
 	}
 }

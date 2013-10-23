@@ -18,8 +18,10 @@ import org.osgi.service.prefs.BackingStoreException;
 public class SbtProjectConfiguration {
 
 	public static final String PROP_SBT_VERSION = "sbtVersion";
+	public static final String PROP_SCALA_VERSION = "scalaVersion";
 
 	private IEclipsePreferences preferences;
+	private ScalaVersion scalaVersion;
 	private SbtVersion sbtVersion;
 
 	/**
@@ -45,9 +47,24 @@ public class SbtProjectConfiguration {
 	 *            the sbt version
 	 */
 	public SbtProjectConfiguration(IProject project, SbtVersion sbtVersion) {
+		this(project, sbtVersion, null);
+	}
+
+	/**
+	 * Loads configurations from the project property.
+	 * 
+	 * @param project
+	 *            the project
+	 * @param sbtVersion
+	 *            the sbt version
+	 * @param scalaVersion
+	 *            the scala version
+	 */
+	public SbtProjectConfiguration(IProject project, SbtVersion sbtVersion, ScalaVersion scalaVersion) {
 		IScopeContext projectScope = new ProjectScope(project);
 		this.preferences = projectScope.getNode(SbtPlugin.PLUGIN_ID);
 		this.sbtVersion = sbtVersion;
+		this.scalaVersion = scalaVersion;
 	}
 
 	private void loadConfiguration() {
@@ -99,6 +116,9 @@ public class SbtProjectConfiguration {
 		// save configurations
 		try {
 			saveProperty(PROP_SBT_VERSION, sbtVersion.name());
+			if (scalaVersion != null) {
+				saveProperty(PROP_SBT_VERSION, scalaVersion.getText());
+			}
 		} catch (Exception ex) {
 			SbtPlugin.logException(ex);
 		}

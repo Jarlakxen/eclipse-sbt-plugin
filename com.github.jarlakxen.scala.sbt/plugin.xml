@@ -52,17 +52,17 @@
             </separator>
          </menu>
          <action
-               class="com.github.jarlakxen.scala.sbt.action.CleanAction"
-               icon="icons/delete.gif"
-               id="com.github.jarlakxen.scala.sbt.action.CleanAction"
-               label="Clean"
-               menubarPath="com.github.jarlakxen.scala.sbt.menu/commands">
-         </action>
-         <action
                class="com.github.jarlakxen.scala.sbt.action.CompileAction"
                icon="icons/build.gif"
                id="com.github.jarlakxen.scala.sbt.action.CompileAction"
                label="Compile"
+               menubarPath="com.github.jarlakxen.scala.sbt.menu/commands">
+         </action>
+         <action
+               class="com.github.jarlakxen.scala.sbt.action.CleanAction"
+               icon="icons/delete.gif"
+               id="com.github.jarlakxen.scala.sbt.action.CleanAction"
+               label="Clean"
                menubarPath="com.github.jarlakxen.scala.sbt.menu/commands">
          </action>
          <action

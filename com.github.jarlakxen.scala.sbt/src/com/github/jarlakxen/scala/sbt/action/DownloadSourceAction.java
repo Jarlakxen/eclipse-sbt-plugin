@@ -14,7 +14,7 @@ import com.github.jarlakxen.scala.sbt.SbtPlugin;
 public class DownloadSourceAction extends AbstractSbtCommandAction {
 
 	public DownloadSourceAction() {
-		super("\"eclipse with-source=true\"");
+		super("'eclipse with-source=true'");
 	}
 
 	@Override

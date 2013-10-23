@@ -4,6 +4,7 @@ import org.eclipse.core.resources.IProject;
 
 import com.github.jarlakxen.scala.sbt.SbtVersion;
 import com.github.jarlakxen.scala.sbt.ScalaVersion;
+import com.github.jarlakxen.scala.sbt.builder.TestLibrary;
 import com.github.jarlakxen.scala.sbt.wizard.create.SbtWizard;
 
 /**
@@ -29,6 +30,7 @@ public class CreateSbtProjectConfiguration {
 	private String organization;
 	private String projectName;
 	private String productVersion;
+	private TestLibrary testLibrary;
 	private boolean webNature;
 	
 	public IProject getProject() {
@@ -77,6 +79,14 @@ public class CreateSbtProjectConfiguration {
 
 	public void setProductVersion(String productVersion) {
 		this.productVersion = productVersion;
+	}
+	
+	public void setTestLibrary(TestLibrary testLibrary) {
+		this.testLibrary = testLibrary;
+	}
+	
+	public TestLibrary getTestLibrary() {
+		return testLibrary;
 	}
 
 	public boolean isWebNature() {
