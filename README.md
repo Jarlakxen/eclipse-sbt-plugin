@@ -21,7 +21,6 @@ You can create a SBT project using a wizard. Choose File > New > Project from th
 [![Create Wizard II](http://i.imgur.com/z1J9HbX.png)](https://github.com/Jarlakxen/eclipse-sbt-plugin)
 
 ##Release Note
-https://github.com/Jarlakxen/eclipse-sbt-plugin/releases
 
 ###1.0.0
 + Supports for SBT 0.11, 0.12 and 0.13
