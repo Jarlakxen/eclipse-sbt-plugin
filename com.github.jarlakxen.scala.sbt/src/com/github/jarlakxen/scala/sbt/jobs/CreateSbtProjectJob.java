@@ -11,12 +11,15 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.ISchedulingRule;
+import org.eclipse.core.runtime.jobs.Job;
 
 import com.github.jarlakxen.scala.sbt.SbtPlugin;
 import com.github.jarlakxen.scala.sbt.SbtProjectConfiguration;
 import com.github.jarlakxen.scala.sbt.TemplateBuilder;
 import com.github.jarlakxen.scala.sbt.action.UpdateProjectConfigurationAction;
 import com.github.jarlakxen.scala.sbt.configurations.CreateSbtProjectConfiguration;
+import com.github.jarlakxen.scala.sbt.util.ProjectUtils;
 import com.github.jarlakxen.scala.sbt.wizard.create.SbtWizard;
 
 /**
@@ -37,7 +40,7 @@ public class CreateSbtProjectJob extends WorkspaceJob {
 	@Override
 	public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
 		try {
-			monitor.beginTask("Create a New SBT Project", 5);
+			monitor.beginTask("Create a New SBT Project", 6);
 			IProject project = configuration.getProject();
 
 			if (monitor.isCanceled()) {
@@ -96,7 +99,7 @@ public class CreateSbtProjectJob extends WorkspaceJob {
 				build.create(IOUtils.toInputStream(content, "UTF-8"), true, null);
 			}
 
-			monitor.worked(2);
+			monitor.worked(1);
 
 			if (monitor.isCanceled()) {
 				return Status.CANCEL_STATUS;
@@ -111,7 +114,7 @@ public class CreateSbtProjectJob extends WorkspaceJob {
 			SbtProjectConfiguration config = new SbtProjectConfiguration(project, configuration.getSbtVersion());
 			config.saveConfiguration();
 
-			monitor.worked(3);
+			monitor.worked(1);
 
 			if (monitor.isCanceled()) {
 				return Status.CANCEL_STATUS;
@@ -123,25 +126,34 @@ public class CreateSbtProjectJob extends WorkspaceJob {
 			// ////////////////////////////////////////////////////////////////////
 			monitor.setTaskName("Generating project configuration files...");
 
+			ISchedulingRule rules = ProjectUtils.mutexRuleFor(project);
+			Job.getJobManager().beginRule(rules, monitor);
+			
 			ILaunch launch = new UpdateProjectConfigurationAction().runFor(project);
 			while (!launch.getProcesses()[0].isTerminated()) {
 				Thread.sleep(500);
 			}
-			project.refreshLocal(IResource.DEPTH_INFINITE, null);
+			Job.getJobManager().endRule(rules);
 			
-			monitor.worked(4);
+			monitor.worked(1);
 
 			if (monitor.isCanceled()) {
 				return Status.CANCEL_STATUS;
 			}
 
-			// ////////////////////////////////////////////////////////////////////
 			// refresh
-			// ////////////////////////////////////////////////////////////////////
-			monitor.setTaskName("Refreshing the project...");
+			monitor.setTaskName("Refreshing the project ...");
 			project.refreshLocal(IResource.DEPTH_INFINITE, null);
+			monitor.worked(1);
+			
+			monitor.setTaskName("Update project nature ...");
 			SbtPlugin.addProjectNatures(project);
-			monitor.worked(5);
+			monitor.worked(1);
+			
+			// refresh
+			monitor.setTaskName("Refreshing the project ...");
+			project.refreshLocal(IResource.DEPTH_INFINITE, null);
+			monitor.worked(1);
 
 			monitor.done();
 

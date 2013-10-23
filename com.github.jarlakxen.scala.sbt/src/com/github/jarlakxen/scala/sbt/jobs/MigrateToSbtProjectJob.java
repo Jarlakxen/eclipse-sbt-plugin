@@ -43,7 +43,7 @@ public class MigrateToSbtProjectJob extends WorkspaceJob {
 	@Override
 	public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
 		try {
-			monitor.beginTask("Migrate Project to ScalaIDE", 4);
+			monitor.beginTask("Migrate Project to ScalaIDE", 5);
 			IProject project = configuration.getProject();
 
 			// add natures
@@ -84,7 +84,7 @@ public class MigrateToSbtProjectJob extends WorkspaceJob {
 						true, null);
 			}
 
-			monitor.worked(2);
+			monitor.worked(1);
 
 			if (monitor.isCanceled()) {
 				return Status.CANCEL_STATUS;
@@ -96,23 +96,27 @@ public class MigrateToSbtProjectJob extends WorkspaceJob {
 			while (!launch.getProcesses()[0].isTerminated()) {
 				Thread.sleep(500);
 			}
-			project.refreshLocal(IResource.DEPTH_INFINITE, null);
 			
-			monitor.worked(3);
+			monitor.setTaskName("Refreshing the project...");
+			project.refreshLocal(IResource.DEPTH_INFINITE, null);
+			monitor.worked(1);
 
 			if (monitor.isCanceled()) {
 				return Status.CANCEL_STATUS;
 			}
 
 			// refresh
-			monitor.setTaskName("Refreshing the project...");
-			project.refreshLocal(IResource.DEPTH_INFINITE, null);
+			monitor.setTaskName("Update project nature...");
 			SbtPlugin.addProjectNatures(project);
-			monitor.worked(4);
+			monitor.worked(1);
 
 			if (monitor.isCanceled()) {
 				return Status.CANCEL_STATUS;
 			}
+			
+			monitor.setTaskName("Refreshing the project...");
+			project.refreshLocal(IResource.DEPTH_INFINITE, null);
+			monitor.worked(1);
 
 			monitor.done();
 

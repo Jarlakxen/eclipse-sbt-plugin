@@ -4,13 +4,13 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.ui.PlatformUI;
 
 /**
  * Provides utility methods for building user interface.
  *
- * @author Naoki Takezoe
+ * @author Facundo Viale
  */
 public class UIUtil {
 
@@ -31,9 +31,13 @@ public class UIUtil {
 	 *
 	 * @param message the error message to show in the dialog.
 	 */
-	public static void showErrorDialog(String message){
-		MessageDialog.openError(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-				"Error", message);
+	public static void showErrorDialog(final String message){
+		Display.getDefault().syncExec(new Runnable() {
+			@Override
+			public void run() {
+				MessageDialog.openError(Display.getDefault().getActiveShell(),"Error", message);
+			}
+		});
 	}
 
 	public static GridData createGridData(int option, int colspan){

@@ -5,6 +5,10 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.commons.io.IOUtils;
 import org.eclipse.core.runtime.CoreException;
@@ -15,30 +19,22 @@ import org.osgi.framework.Bundle;
 /**
  * Manages built-in SNT runtime.
  * 
- * @author Naoki Takezoe
+ * @author Facundo Viale
  */
 public class SbtLaunchJarManager {
 
-	/**
-	 * built-in SBT 0.11 JAR file
-	 */
-	public static final File SBT011_JAR_FILE;
-
-	/**
-	 * built-in SBT 0.12 JAR file
-	 */
-	public static final File SBT012_JAR_FILE;
-
-	/**
-	 * built-in SBT 0.13 JAR file
-	 */
-	public static final File SBT013_JAR_FILE;
+	public static final Map<SbtVersion, File> SBT_JAR_FILES;
 
 	static {
 		File dir = SbtPlugin.getDefault().getStateLocation().toFile();
-		SBT011_JAR_FILE = new File(dir, SbtVersion.SBT011.getLauncherJarName());
-		SBT012_JAR_FILE = new File(dir, SbtVersion.SBT012.getLauncherJarName());
-		SBT013_JAR_FILE = new File(dir, SbtVersion.SBT013.getLauncherJarName());
+		
+		Map<SbtVersion, File> sbtJarFiles = new HashMap<SbtVersion, File>( SbtVersion.values().length);
+		
+		for(SbtVersion version : SbtVersion.values()){
+			sbtJarFiles.put(version, new File(dir, version.getLauncherJarName()));
+		}
+		
+		SBT_JAR_FILES = Collections.unmodifiableMap(sbtJarFiles);
 	}
 
 	/**
@@ -49,21 +45,14 @@ public class SbtLaunchJarManager {
 	 */
 	public static void deploy() throws CoreException {
 		Bundle bundle = SbtPlugin.getDefault().getBundle();
-		copyFile(bundle.getEntry("/sbt/0.11/" + SbtVersion.SBT011.getLauncherJarName()), SBT011_JAR_FILE);
-		copyFile(bundle.getEntry("/sbt/0.12/" + SbtVersion.SBT012.getLauncherJarName()), SBT012_JAR_FILE);
-		copyFile(bundle.getEntry("/sbt/0.13/" + SbtVersion.SBT013.getLauncherJarName()), SBT013_JAR_FILE);
+		
+		for( Entry<SbtVersion, File> entry : SBT_JAR_FILES.entrySet()){
+			copyFile(bundle.getEntry("/sbt/" + entry.getKey().getPrefix() + "/" + entry.getKey().getLauncherJarName()), entry.getValue());
+		}
 	}
 
 	public static File getLauncher(SbtVersion version) {
-		if (version == SbtVersion.SBT011) {
-			return SbtLaunchJarManager.SBT011_JAR_FILE;
-		} else if (version == SbtVersion.SBT012) {
-			return SbtLaunchJarManager.SBT012_JAR_FILE;
-		} else if (version == SbtVersion.SBT013) {
-			return SbtLaunchJarManager.SBT013_JAR_FILE;
-		}
-
-		return null;
+		return SBT_JAR_FILES.get(version);
 	}
 
 	/**
@@ -71,9 +60,9 @@ public class SbtLaunchJarManager {
 	 * {@link SbtPlugin} is shutdown.
 	 */
 	public static void undeploy() {
-		SBT011_JAR_FILE.delete();
-		SBT012_JAR_FILE.delete();
-		SBT013_JAR_FILE.delete();
+		for( Entry<SbtVersion, File> entry : SBT_JAR_FILES.entrySet()){
+			entry.getValue().delete();
+		}
 	}
 
 	private static void copyFile(URL url, File file) throws CoreException {

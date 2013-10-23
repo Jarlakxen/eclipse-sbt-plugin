@@ -16,8 +16,9 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.views.contentoutline.ContentOutlinePage;
 
-import com.github.jarlakxen.scala.sbt.SbtPlugin;
+import com.github.jarlakxen.scala.sbt.SbtParser;
 import com.github.jarlakxen.scala.sbt.SbtParser.SbtSetting;
+import com.github.jarlakxen.scala.sbt.SbtPlugin;
 
 public class SbtOutlinePage extends ContentOutlinePage {
 
@@ -60,10 +61,10 @@ public class SbtOutlinePage extends ContentOutlinePage {
 		if (getControl() == null || getControl().isDisposed()) {
 			return;
 		}
-		// String source = editor.getDocumentProvider().getDocument(editor.getEditorInput()).get();
-		// List<SbtSetting> settings = SbtParser.parse(source);
-		// root.settings.clear();
-		// root.settings.addAll(settings);
+		String source = editor.getDocumentProvider().getDocument(editor.getEditorInput()).get();
+		List<SbtSetting> settings = SbtParser.parse(source);
+		root.settings.clear();
+		root.settings.addAll(settings);
 
 		TreeViewer viewer = getTreeViewer();
 		if (viewer != null) {

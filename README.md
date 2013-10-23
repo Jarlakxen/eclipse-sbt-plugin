@@ -18,14 +18,13 @@ You can create a SBT project using a wizard. Choose File > New > Project from th
 
 ##Release Note
 
-###Coming Soon
+###1.0.0
 + Supports for SBT 0.11, 0.12 and 0.13
-+ Automatic reload after change build.sbt
++ Automatic reload after change in build.sbt or /project
++ Configurable Scala version
 + Add Web Project nature
-+ Move large operations to jobs
++ Move large operations to background jobs
 + Bug fixing
 
 ###TODO
 + Import sbt project
-+ Automatic reload after changes in /project
-+ Add build.sbt outline

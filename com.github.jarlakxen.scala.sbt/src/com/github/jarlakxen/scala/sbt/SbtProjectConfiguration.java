@@ -32,7 +32,7 @@ public class SbtProjectConfiguration {
 	 */
 	public SbtProjectConfiguration(IProject project) {
 		IScopeContext projectScope = new ProjectScope(project);
-		this.preferences = projectScope.getNode("jp.sf.amateras.scala.sbt");
+		this.preferences = projectScope.getNode(SbtPlugin.PLUGIN_ID);
 		loadConfiguration();
 	}
 
@@ -46,7 +46,7 @@ public class SbtProjectConfiguration {
 	 */
 	public SbtProjectConfiguration(IProject project, SbtVersion sbtVersion) {
 		IScopeContext projectScope = new ProjectScope(project);
-		this.preferences = projectScope.getNode("jp.sf.amateras.scala.sbt");
+		this.preferences = projectScope.getNode(SbtPlugin.PLUGIN_ID);
 		this.sbtVersion = sbtVersion;
 	}
 

@@ -1,6 +1,5 @@
 package com.github.jarlakxen.scala.sbt.editor;
 
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.internal.ui.javaeditor.CompilationUnitEditor;
 import org.eclipse.jface.text.contentassist.IContentAssistant;
@@ -8,14 +7,7 @@ import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
-import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IEditorSite;
-import org.eclipse.ui.IFileEditorInput;
-import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
-
-import com.github.jarlakxen.scala.sbt.jobs.UpdateProjectJob;
 
 import scala.tools.eclipse.InteractiveCompilationUnit;
 import scala.tools.eclipse.ScalaEditor;
@@ -36,28 +28,10 @@ public class SbtEditor extends CompilationUnitEditor implements ScalaEditor {
 		}
 	};
 
-	private IProject activeProject;
-
 	private SbtOutlinePage outlinePage;
 
 	public SbtEditor() {
 		ScalaPlugin.plugin().getPreferenceStore().addPropertyChangeListener(preferenceListener);
-	}
-
-	@Override
-	public void init(IEditorSite site, IEditorInput input) throws PartInitException {
-		super.init(site, input);
-
-		if (input instanceof IFileEditorInput) {
-			activeProject = ((IFileEditorInput) input).getFile().getProject();
-			return;
-		}
-
-		IEditorPart editorPart = site.getWorkbenchWindow().getActivePage().getActiveEditor();
-
-		if (editorPart != null) {
-			activeProject = ((IFileEditorInput) editorPart.getEditorInput()).getFile().getProject();
-		}
 	}
 
 	@Override
@@ -97,8 +71,9 @@ public class SbtEditor extends CompilationUnitEditor implements ScalaEditor {
 	}
 
 	private void update() {
-		UpdateProjectJob job = new UpdateProjectJob(activeProject);
-		job.schedule();
+		if (outlinePage != null) {
+			outlinePage.update();
+		}
 	}
 
 	@SuppressWarnings("rawtypes")

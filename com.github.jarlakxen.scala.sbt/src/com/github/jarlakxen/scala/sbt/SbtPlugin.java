@@ -10,6 +10,8 @@ import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
+import com.github.jarlakxen.scala.sbt.listener.SbtProjectFilesChangeListener;
+
 import scala.tools.eclipse.ScalaPlugin;
 
 /**
@@ -20,7 +22,7 @@ import scala.tools.eclipse.ScalaPlugin;
 public class SbtPlugin extends AbstractUIPlugin {
 
 	/** The plug-in ID */
-	public static final String PLUGIN_ID = "jp.sf.amateras.scala.sbt"; //$NON-NLS-1$
+	public static final String PLUGIN_ID = "com.github.jarlakxen.scala.sbt"; //$NON-NLS-1$
 
 	/** The nature ID */
 	public static final String NATURE_ID = PLUGIN_ID + ".SbtProjectNature"; //$NON-NLS-1$
@@ -44,6 +46,7 @@ public class SbtPlugin extends AbstractUIPlugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
+		SbtProjectFilesChangeListener.register();
 		SbtLaunchJarManager.deploy();
 	}
 
@@ -87,85 +90,5 @@ public class SbtPlugin extends AbstractUIPlugin {
 		desc.setNatureIds(natureIds);
 		project.setDescription(desc, null);
 	}
-
-//	/**
-//	 * Returns completion proposals for SBT command.
-//	 *
-//	 * @param project the target project
-//	 * @return completion proposals for SBT command
-//	 */
-//	public static List<SbtCommandProposal> getCommandProposal(IJavaProject project){
-//		SbtProjectConfiguration config = new SbtProjectConfiguration(project.getProject());
-//
-//		File jarFile = config.getProjectSbtRuntime();
-//		if(jarFile == null){
-//			return Collections.emptyList();
-//		}
-//
-//		List<SbtCommandProposal> list = new ArrayList<SbtPlugin.SbtCommandProposal>();
-//
-//		try {
-//			// TODO javaコマンドで実行しているのがいまいち…
-//			Process process = new ProcessBuilder()
-//				.command("java", "-jar", jarFile.getName(), "actions")
-//				.directory(jarFile.getParentFile())
-//				.start();
-//
-//			InputStream in = process.getInputStream();
-//			ByteArrayOutputStream out = new ByteArrayOutputStream();
-//
-//			byte[] buf = new byte[1024 * 8];
-//			int length = 0;
-//			while((length = in.read(buf)) != -1){
-//				out.write(buf, 0, length);
-//			}
-//
-//			in.close();
-//			out.close();
-//
-//			process.destroy();
-//
-//			String result = new String(out.toByteArray());
-//
-//			BufferedReader reader = new BufferedReader(new StringReader(result));
-//			String line = null;
-//			while((line = reader.readLine()) != null){
-//				if(line.startsWith("\t")){
-//					line = line.trim();
-//
-//					String command = null;
-//					String description = null;
-//
-//					int index = line.indexOf(':');
-//					if(index >= 0){
-//						command = line.substring(0, index);
-//						description = line.substring(index + 1).trim();
-//					} else {
-//						command = line;
-//						description = "";
-//					}
-//
-//					list.add(new SbtCommandProposal(command, description));
-//				}
-//			}
-//
-//		} catch(IOException ex){
-//			SbtPlugin.logException(ex);
-//		}
-//
-//		return list;
-//	}
-//
-//	public static class SbtCommandProposal {
-//
-//		public String command;
-//		public String description;
-//
-//		public SbtCommandProposal(String command, String description){
-//			this.command = command;
-//			this.description = description;
-//		}
-//
-//	}
 
 }

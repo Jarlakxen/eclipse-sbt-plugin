@@ -2,6 +2,9 @@ package com.github.jarlakxen.scala.sbt.util;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IResourceRuleFactory;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.internal.core.PackageFragmentRoot;
@@ -11,7 +14,13 @@ import org.eclipse.ui.ISelectionService;
 import org.eclipse.ui.PlatformUI;
 
 public class ProjectUtils {
-
+	
+    public static final IResourceRuleFactory RULE_FACTORY = ResourcesPlugin.getWorkspace().getRuleFactory();
+    
+    public static ISchedulingRule mutexRuleFor(IProject project) {
+    	return RULE_FACTORY.createRule(project);
+    }
+    
 	public static IProject getCurrentSelectedProject() {
 		IProject project = null;
 		ISelectionService selectionService = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getSelectionService();
