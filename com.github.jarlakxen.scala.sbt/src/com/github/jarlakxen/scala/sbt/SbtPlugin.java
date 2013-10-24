@@ -16,10 +16,16 @@ import scala.tools.eclipse.ScalaPlugin;
 
 /**
  * The activator class controls the plug-in life cycle
- *
+ * 
  * @author Naoki Takezoe
  */
 public class SbtPlugin extends AbstractUIPlugin {
+
+	public static final String[] PROJECT_NATURES_IDS = new String[] { 
+		ScalaPlugin.plugin().natureId(), 
+		"org.eclipse.jdt.core.javanature",
+		SbtPlugin.NATURE_ID 
+	};
 
 	/** The plug-in ID */
 	public static final String PLUGIN_ID = "com.github.jarlakxen.scala.sbt"; //$NON-NLS-1$
@@ -41,7 +47,10 @@ public class SbtPlugin extends AbstractUIPlugin {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
+	 * 
+	 * @see
+	 * org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext
+	 * )
 	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
@@ -52,7 +61,10 @@ public class SbtPlugin extends AbstractUIPlugin {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
+	 * 
+	 * @see
+	 * org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext
+	 * )
 	 */
 	public void stop(BundleContext context) throws Exception {
 		SbtLaunchJarManager.undeploy();
@@ -68,27 +80,21 @@ public class SbtPlugin extends AbstractUIPlugin {
 
 	/**
 	 * Returns the shared instance
-	 *
+	 * 
 	 * @return the shared instance
 	 */
 	public static SbtPlugin getDefault() {
 		return plugin;
 	}
 
-	public static void logException(Exception ex){
+	public static void logException(Exception ex) {
 		IStatus status = new Status(IStatus.ERROR, PLUGIN_ID, ex.toString(), ex);
 		getDefault().getLog().log(status);
 	}
-	
+
 	public static void addProjectNatures(IProject project) throws CoreException {
 		IProjectDescription desc = project.getDescription();
-		String[] natureIds = new String[]{
-				ScalaPlugin.plugin().natureId(),
-				"org.eclipse.jdt.core.javanature",
-				SbtPlugin.NATURE_ID
-		};
-		desc.setNatureIds(natureIds);
+		desc.setNatureIds(PROJECT_NATURES_IDS);
 		project.setDescription(desc, null);
 	}
-
 }

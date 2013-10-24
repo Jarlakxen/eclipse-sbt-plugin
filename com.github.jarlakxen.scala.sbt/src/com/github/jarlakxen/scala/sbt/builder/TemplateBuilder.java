@@ -116,6 +116,8 @@ public class TemplateBuilder {
 
 	public static class SbtPropertiesTemplateBuilder {
 		private SbtVersion sbtVersion;
+		private String organization;
+		private String projectName;
 
 		private SbtPropertiesTemplateBuilder() {
 
@@ -125,9 +127,23 @@ public class TemplateBuilder {
 			this.sbtVersion = sbtVersion;
 			return this;
 		}
+		
+		public SbtPropertiesTemplateBuilder organization(String organization) {
+			this.organization = organization;
+			return this;
+		}
+
+		public SbtPropertiesTemplateBuilder projectName(String projectName) {
+			this.projectName = projectName;
+			return this;
+		}
 
 		public String build() {
-			return "sbt.version=" + sbtVersion.getLastVersion();
+			StringBuilder builder = new StringBuilder();
+			builder.append("sbt.version=").append(sbtVersion.getLastVersion()).append(BR);
+			builder.append("project.organization=").append(organization).append(BR);
+			builder.append("project.name=").append(projectName).append(BR);
+			return builder.toString();
 		}
 	}
 

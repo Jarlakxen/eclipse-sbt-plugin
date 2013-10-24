@@ -4,14 +4,18 @@ eclipse-sbt-plugin provides a small Eclipse plug-ins for SBT. It supplements [Sc
 
 This project is a fork of [takezoe's eclipse-scala-tools](https://bitbucket.org/takezoe/eclipse-scala-tools/)
 
+##Features
++ Supports for SBT 0.11, 0.12 and 0.13
++ Scala IDE integration
++ Automatic reload and update dependancies after change in build.sbt or /project
++ Supports attach dependancies sources
+
 ##Instalation
 Download the plugin JAR file from the [Release Page](https://github.com/Jarlakxen/eclipse-sbt-plugin/releases) and put it into ECLIPSE_HOME/plugins.
 
 > Note for eclipse-sbt-plugin requires a latest version of [ScalaIDE](http://scala-ide.org/) for Eclipse 3.x.
 
-##Features
-
-###SBT Support
+##SBT Support
 eclipse-sbt-plugin supports all of SBT 0.11, 0.12 and 0.13.
 
 You can create a SBT project using a wizard. Choose File > New > Project from the main menu of Eclipse and choose Scala > SBT Project in the new project creation wizard.

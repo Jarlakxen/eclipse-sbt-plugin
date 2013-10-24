@@ -95,7 +95,7 @@ public class CreateSbtProjectJob extends WorkspaceJob {
 			// Create build.properties
 			IFile build = project.getFile("project/build.properties");
 			if (!build.exists()) {
-				content = TemplateBuilder.createSbtPropertiesTemplate().sbtVersion(configuration.getSbtVersion()).build();
+				content = TemplateBuilder.createSbtPropertiesTemplate().projectName(configuration.getProjectName()).organization(configuration.getOrganization()).sbtVersion(configuration.getSbtVersion()).build();
 				build.create(IOUtils.toInputStream(content, "UTF-8"), true, null);
 			}
 
